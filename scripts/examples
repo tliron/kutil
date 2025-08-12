@@ -6,7 +6,10 @@ HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
 
 cd "$ROOT"
 
-for E in $(cargo run --example --package kutil-cli 2>&1 | grep --extended-regexp '^    ' | sort); do
-    m "\nexample: $E\n" "$RED"
-	cargo +nightly run --quiet --example "$E" --package kutil-cli --features=derive
+for E in $(cargo run --example --package kutil 2>&1 | grep --extended-regexp '^    ' | sort); do
+    if [[ "$E" != tower_* ]]; then
+        m "\nexample: $E\n" "$RED"
+        RUSTFLAGS='-Z threads=8 --codegen linker=clang --codegen link-arg=--ld-path=wild' \
+    	cargo +nightly run --quiet --example "$E" --package kutil --features=cli,std,derive
+    fi
 done

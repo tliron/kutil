@@ -34,12 +34,23 @@ impl Generator {
             #[automatically_derived]
             impl
             #impl_generics
-                ::std::convert::Into<&'static str> for #enum_name #enum_generics
+                 #enum_name #enum_generics
             {
-                fn into(self) -> &'static str {
+                /// As string.
+                pub fn as_str(self) -> &'static str {
                     match self {
                         #(#segments)*
                     }
+                }
+            }
+
+            #[automatically_derived]
+            impl
+            #impl_generics
+                ::std::convert::Into<&'static str> for #enum_name #enum_generics
+            {
+                fn into(self) -> &'static str {
+                    self.as_str()
                 }
             }
 
@@ -50,8 +61,7 @@ impl Generator {
                 #where_clause
             {
                 fn fmt(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-                    let representation: &'static str = (*self).into();
-                    ::std::fmt::Display::fmt(representation, formatter)
+                    ::std::fmt::Display::fmt(self.as_str(), formatter)
                 }
             }
         }

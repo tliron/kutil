@@ -1,20 +1,12 @@
 [workspace]
 resolver = "3"
 members = [
-    "cli",
+    "library",
     "cli-macros",
-    "http",
-    "io",
-    "std",
     "std-macros",
-    "transcoding",
 ]
 
 [patch.crates-io]
-kutil-cli = { path = "cli" }
+kutil = { path = "library" }
 kutil-cli-macros = { path = "cli-macros" }
-kutil-http = { path = "http" }
-kutil-io = { path = "io" }
-kutil-std = { path = "std" }
 kutil-std-macros = { path = "std-macros" }
-kutil-transcoding = { path = "transcoding" }

@@ -2,28 +2,28 @@
 edition = "2024"
 
 name = "kutil-cli-macros"
-description = "Procedural macros for kutil-cli"
+description = "Procedural macros for kutil::cli"
 version = "0.0.5"
-rust-version = "1.89"
+rust-version = "1.90"
 
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/tliron/rust-kutil"
-documentation = "https://docs.rs/kutil-cli"
+repository = "https://github.com/tliron/kutil"
+documentation = "https://docs.rs/kutil"
 authors = ["Tal Liron"]
 
 readme = "../../README.md"
 
 categories = ["command-line-utilities"] # https://crates.io/category_slugs
-keywords = ["kutil", "cli", "clap"]
+keywords = ["kutil", "cli", "depict"]
 
 [lib]
 proc-macro = true
 
 [dependencies]
 deluxe = "0.5.0"
-proc-macro2 = "1.0.96"
-quote = "1.0.40"
-syn = "2.0.104"
+proc-macro2 = "1.0.101"
+quote = "1.0.41"
+syn = "2.0.106"
 
 # https://stackoverflow.com/a/61417700
 [package.metadata.docs.rs]

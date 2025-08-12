@@ -42,7 +42,7 @@ impl Generator {
 
         let error = match &self.enum_attribute.error {
             Some(error) => error.to_token_stream(),
-            None => quote! { ::kutil_std::string::ParseError },
+            None => quote! { ::kutil::std::string::ParseError },
         };
 
         quote! {

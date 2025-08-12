@@ -12,7 +12,7 @@ pub struct FromStrEnumAttribute {
     ///
     /// Must implement From<&str>.
     ///
-    /// Will default to kutil_std::string::ParseError.
+    /// Will default to kutil::std::string::ParseError.
     #[deluxe(default)]
     pub error: Option<syn::Type>,
 

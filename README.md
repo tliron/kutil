@@ -13,7 +13,7 @@ Crates:
     [helpers](https://docs.rs/kutil-cli/latest/kutil_cli/clap/index.html)
   * [Initialize logging](https://docs.rs/kutil-cli/latest/kutil_cli/debug/index.html)
     (via [tracing](https://github.com/tokio-rs/tracing))
-  * The [Debuggable trait](https://docs.rs/kutil-cli/latest/kutil_cli/debug/index.html) is a supercharged version of `Debug`
+  * The [Depict trait](https://docs.rs/kutil-cli/latest/kutil_cli/depict/index.html) is a supercharged version of `Debug`
 * [kutil-http](https://docs.rs/kutil-http):
   * [Easy access to headers](https://docs.rs/kutil-http/latest/kutil_http/trait.HeaderValues.html)
   * Conditional HTTP and content negotiation
@@ -35,7 +35,7 @@ License
 
 Like much of the Rust ecosystem, licensed under your choice of either of
 
-* [Apache License, Version 2.0](https://github.com/tliron/rust-kutil/blob/main/LICENSE-APACHE)
-* [MIT license](https://github.com/tliron/rust-kutil/blob/main/LICENSE-MIT)
+* [Apache License, Version 2.0](https://github.com/tliron/kutil/blob/main/LICENSE-APACHE)
+* [MIT license](https://github.com/tliron/kutil/blob/main/LICENSE-MIT)
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.

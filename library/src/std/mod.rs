@@ -31,6 +31,9 @@ pub mod string;
 /// Synchronization utilities.
 pub mod sync;
 
+/// Time utilities.
+pub mod time;
+
 /// Immutable ("zero-copy") utilities.
 #[cfg(feature = "immutable")]
 #[allow(unused_imports)]

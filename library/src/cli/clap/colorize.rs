@@ -19,6 +19,14 @@ pub enum Colorize {
 }
 
 impl Colorize {
+    /// True if we should colorize.
+    pub fn colorize(&self) -> bool {
+        match self {
+            Self::False => false,
+            _ => true,
+        }
+    }
+
     /// Applies the colorization option globally.
     pub fn initialize(&self) {
         match self {

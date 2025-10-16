@@ -39,7 +39,7 @@ impl error::Error for ExitError {}
 impl fmt::Display for ExitError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.message {
-            Some(message) => write!(formatter, "{}: {}", self.code, message),
+            Some(message) => write!(formatter, "exit code {}: {}", self.code, message),
             None => Ok(()),
         }
     }

@@ -19,14 +19,15 @@
 /// "Fostering" means creating a single type on top of both types, and then implementing necessary
 /// traits for that type, e.g. [PartialEq].
 ///
-/// This type simply provides a unified mechanism for fostering. Furthermore, this module contains
-/// commonly useful implementations, such as [FosterString](super::string::FosterString) and
-/// [FosterStringVector](super::string_vector::FosterStringVector), as well as macros for
+/// The Foster enum simply provides a unified mechanism for fostering. Furthermore, this module
+/// contains commonly useful implementations, such as [FosterString](super::string::FosterString)
+/// and [FosterStringVector](super::string_vector::FosterStringVector), as well as macros for
 /// delegating the implemented traits to newtypes.
 ///
-/// Note that [Cow](std::borrow::Cow) also counts as fostering, but it's more specific in that the
-/// fostered type is always a reference of the owned type, which allows for generalized conversion
-/// to ownership when necessary via [ToOwned].
+/// Note that the built-in [Cow](std::borrow::Cow) also counts as a fostering mechanism, but it's
+/// more specific in that the fostered type is always a reference of the owned type, which allows
+/// for blanket conversion to ownership when necessary via [ToOwned]. The Foster enum is more
+/// general and thus potentially more restricted in terms of applicable use cases.
 #[derive(Clone, Debug)]
 pub enum Foster<OwnedT, FosteredT> {
     /// Owned.

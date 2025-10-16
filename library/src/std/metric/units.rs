@@ -24,7 +24,7 @@ pub const GIBI: u64 = 1024 * 1024 * 1024;
 /// Tebi.
 pub const TEBI: u64 = 1024 * 1024 * 1024 * 1024;
 
-/// Parse unit.
+/// Parse metric unit.
 pub fn parse_metric_unit(representation: &str) -> Result<u64, ParseError> {
     match representation.to_lowercase().as_str() {
         "" | "b" | "byte" | "bytes" => Ok(1),

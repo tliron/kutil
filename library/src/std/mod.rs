@@ -10,6 +10,9 @@ pub mod collections;
 /// Error utilities.
 pub mod error;
 
+/// Exit utilities.
+pub mod exit;
+
 /// Foster utilities.
 pub mod foster;
 
@@ -25,11 +28,17 @@ pub mod iter;
 /// Metric utilities.
 pub mod metric;
 
+/// Scope utilities.
+pub mod scope;
+
 /// String utilities.
 pub mod string;
 
 /// Synchronization utilities.
 pub mod sync;
+
+/// Time utilities.
+pub mod time;
 
 /// Immutable ("zero-copy") utilities.
 #[cfg(feature = "immutable")]

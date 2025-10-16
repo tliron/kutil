@@ -16,7 +16,6 @@ Highlights:
     [helpers](https://docs.rs/kutil/latest/kutil/cli/clap/index.html)
   * [Initialize logging](https://docs.rs/kutil/latest/kutil/cli/log/index.html)
     (via [tracing](https://github.com/tokio-rs/tracing))
-  * The [Depict trait](https://docs.rs/kutil/latest/kutil/cli/depict/index.html) is a supercharged version of `Debug`
 * [http](https://docs.rs/kutil/latest/kutil/http/index.html):
   * [Easy access to headers](https://docs.rs/kutil/latest/kutil/http/trait.HeaderValues.html)
   * Conditional HTTP and content negotiation

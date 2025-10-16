@@ -2,8 +2,8 @@
 #[cfg(feature = "clap")]
 pub mod clap;
 
-/// Depiction utilities.
-pub mod depict;
+/// ConEmu utilities.
+pub mod con_emu;
 
 /// Logging and tracing utilities.
 pub mod log;

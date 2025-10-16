@@ -13,9 +13,9 @@ pub struct Version {
     #[arg(long, short = 'h', action = ArgAction::Help)]
     pub help: Option<bool>,
 
-    /// verbose
-    #[arg(long, short = 'v')]
-    verbose: bool,
+    /// show build information
+    #[arg(long)]
+    build: bool,
 }
 
 impl Version {
@@ -29,7 +29,7 @@ impl Version {
             println!("{}: {}", command.get_name(), version);
         }
 
-        if self.verbose {
+        if self.build {
             let build_info = build_info();
 
             if let Some(version_control) = &build_info.version_control

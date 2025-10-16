@@ -1,13 +1,13 @@
-use super::recipient::*;
+use super::receiver::*;
 
 //
-// FailFastErrorRecipient
+// FailFastErrorReceiver
 //
 
-/// [ErrorRecipient] that fails on the first given error.
-pub struct FailFastErrorRecipient;
+/// [ErrorReceiver] that fails on the first given error.
+pub struct FailFastErrorReceiver;
 
-impl<ErrorT> ErrorRecipient<ErrorT> for FailFastErrorRecipient {
+impl<ErrorT> ErrorReceiver<ErrorT> for FailFastErrorReceiver {
     fn give_error(&mut self, error: ErrorT) -> Result<(), ErrorT> {
         Err(error)
     }

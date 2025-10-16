@@ -1,4 +1,4 @@
-use super::recipient::*;
+use super::receiver::*;
 
 use std::{error::*, fmt, iter::*, slice, vec};
 
@@ -8,7 +8,7 @@ use std::{error::*, fmt, iter::*, slice, vec};
 
 /// An [Error] that contains zero or more errors.
 ///
-/// Implements [ErrorRecipient] for accumulating errors.
+/// Implements [ErrorReceiver] for accumulating errors.
 #[derive(Clone, Debug)]
 pub struct Errors<ErrorT> {
     /// The errors.
@@ -32,7 +32,7 @@ impl<ErrorT> Errors<ErrorT> {
     }
 }
 
-impl<ErrorT> ErrorRecipient<ErrorT> for Errors<ErrorT> {
+impl<ErrorT> ErrorReceiver<ErrorT> for Errors<ErrorT> {
     fn give_error(&mut self, error: ErrorT) -> Result<(), ErrorT> {
         self.errors.push(error.into());
         Ok(())

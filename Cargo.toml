@@ -2,11 +2,5 @@
 resolver = "3"
 members = [
     "library",
-    "cli-macros",
     "std-macros",
 ]
-
-[patch.crates-io]
-kutil = { path = "library" }
-kutil-cli-macros = { path = "cli-macros" }
-kutil-std-macros = { path = "std-macros" }

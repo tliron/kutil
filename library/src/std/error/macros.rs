@@ -5,6 +5,7 @@ macro_rules! unwrap_or_give {
         match $result {
             ::std::result::Result::Ok(ok) => ok,
             ::std::result::Result::Err(error) => {
+                use $crate::std::error::ErrorReceiver;
                 $errors.give_error(error.into())?;
                 $default
             }
@@ -13,6 +14,7 @@ macro_rules! unwrap_or_give {
 
     ( $result:expr, $errors:expr $(,)? ) => {
         if let ::std::result::Result::Err(error) = $result {
+            use $crate::std::error::ErrorReceiver;
             $errors.give_error(error.into())?;
         }
     };
@@ -27,6 +29,7 @@ macro_rules! unwrap_or_give_and_return {
         match $result {
             ::std::result::Result::Ok(ok) => ok,
             ::std::result::Result::Err(error) => {
+                use $crate::std::error::ErrorReceiver;
                 $errors.give_error(error.into())?;
                 return $return;
             }

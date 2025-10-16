@@ -10,8 +10,4 @@ cd "$ROOT"
 
 RUSTDOCFLAGS="--cfg docsrs" \
 cargo +nightly doc --all-features \
-    --package=kutil-cli \
-    --package=kutil-http \
-    --package=kutil-io \
-    --package=kutil-std \
-    --package=kutil-transcoding
+    --package=kutil

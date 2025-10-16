@@ -2,7 +2,7 @@
 #[macro_export]
 macro_rules! message_error {
     ( $type:ident, $message:literal $(,)? ) => {
-        /// $type.
+        #[doc = concat!(stringify!($type), ".")]
         #[derive(Clone, Debug, Default)]
         pub struct $type(::std::option::Option<::std::string::String>);
 

@@ -6,6 +6,9 @@ mod macros;
 mod message;
 mod recipient;
 mod recipient_ref;
+mod variant;
 
 #[allow(unused_imports)]
-pub use {captured::*, errors::*, fail_fast::*, io::*, macros::*, message::*, recipient::*, recipient_ref::*};
+pub use {
+    captured::*, errors::*, fail_fast::*, io::*, macros::*, message::*, recipient::*, recipient_ref::*, variant::*,
+};

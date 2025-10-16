@@ -2,6 +2,9 @@
 #[cfg(feature = "clap")]
 pub mod clap;
 
+/// ConEmu utilities.
+pub mod con_emu;
+
 /// Depiction utilities.
 pub mod depict;
 

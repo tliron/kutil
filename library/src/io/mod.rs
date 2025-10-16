@@ -6,3 +6,6 @@ pub mod reader;
 
 /// Utilities for [Stream](futures::Stream).
 pub mod stream;
+
+/// Utilities for [io::Write](std::io::Write).
+pub mod writer;

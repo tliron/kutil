@@ -4,7 +4,7 @@ edition = "2024"
 name = "kutil-cli-macros"
 description = "Procedural macros for kutil::cli"
 version = "0.0.7"
-rust-version = "1.90"
+rust-version = "1.91"
 
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tliron/kutil"
@@ -21,9 +21,9 @@ proc-macro = true
 
 [dependencies]
 deluxe = "0.5.0"
-proc-macro2 = "1.0.101"
+proc-macro2 = "1.0.103"
 quote = "1.0.41"
-syn = "2.0.106"
+syn = "2.0.108"
 
 # https://stackoverflow.com/a/61417700
 [package.metadata.docs.rs]

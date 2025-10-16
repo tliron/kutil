@@ -26,7 +26,7 @@ impl As {
             Self::Display => {
                 let value = style.style(quote! { format!("{}", value) });
                 quote! {
-                    child_context.separate(writer)?;
+                    child_context.child().with_separator(true).separate(writer)?;
                     ::std::write!(writer, "{}", #value)?;
                 }
             }
@@ -34,7 +34,7 @@ impl As {
             Self::Debug => {
                 let value = style.style(quote! { format!("{:?}", value) });
                 quote! {
-                    child_context.separate(writer)?;
+                    child_context.child().with_separator(true).separate(writer)?;
                     ::std::write!(writer, "{}", #value)?;
                 }
             }
@@ -42,7 +42,7 @@ impl As {
             Self::DebugAlt => {
                 let value = style.style(quote! { format!("{:#?}", value) });
                 quote! {
-                    child_context.separate(writer)?;
+                    child_context.child().with_separator(true).separate(writer)?;
                     ::std::write!(writer, "{}", #value)?;
                 }
             }
@@ -51,7 +51,7 @@ impl As {
                 ::kutil::cli::depict::Depict::depict(
                     value,
                     writer,
-                    child_context,
+                    &mut child_context.child().with_separator(true),
                 )?;
             },
 
@@ -59,14 +59,14 @@ impl As {
                 ::kutil::cli::depict::DynDepict::dyn_depict(
                     value.as_ref(),
                     ::std::boxed::Box::new(writer),
-                    child_context,
+                    &mut child_context.child().with_separator(true),
                 )?;
             },
 
             Self::Custom(custom) => {
                 let value = style.style(quote! { (#custom)(value)? });
                 quote! {
-                    child_context.separate(writer)?;
+                    child_context.child().with_separator(true).separate(writer)?;
                     ::std::write!(writer, "{}", #value)?;
                 }
             }

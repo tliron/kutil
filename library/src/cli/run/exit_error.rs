@@ -39,7 +39,7 @@ impl error::Error for ExitError {}
 impl fmt::Display for ExitError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.message {
-            Some(message) => write!(formatter, "{}: {}", self.code, message),
+            Some(message) => write!(formatter, "exit code {}: {}", self.code, message),
             None => Ok(()),
         }
     }
@@ -64,3 +64,24 @@ impl From<&str> for ExitError {
         message.to_string().into()
     }
 }
+
+/// Handle an [ExitError] enum variant by implementing [RunError](super::RunError).
+#[macro_export]
+macro_rules! handle_exit_error {
+    ( $error_enum:ty, $exit_error_variant:ident $(,)? ) => {
+        impl $crate::cli::run::RunError for $error_enum {
+            fn handle(&self) -> (bool, u8) {
+                (
+                    false,
+                    match self {
+                        Self::$exit_error_variant(exit_error) => exit_error.code,
+                        _ => 1,
+                    },
+                )
+            }
+        }
+    };
+}
+
+#[allow(unused_imports)]
+pub use handle_exit_error;

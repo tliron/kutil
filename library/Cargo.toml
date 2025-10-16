@@ -4,7 +4,7 @@ edition = "2024"
 name = "kutil"
 description = "Kutil Utilities Collection"
 version = "0.0.2"
-rust-version = "1.90"
+rust-version = "1.91"
 
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tliron/kutil"
@@ -21,9 +21,9 @@ keywords = ["kutil", "cli", "http", "io", "transcoding"]
 anstream = { optional = true, version = "0.6.21" }
 anstyle = { optional = true, version = "1.0.13" }
 build-info = { optional = true, version = "0.0.42" }
-clap = { optional = true, version = "4.5.49", features = ["derive"] }
+clap = { optional = true, version = "4.5.51", features = ["derive"] }
 clap_complete_command = { optional = true, version = "0.6.1" }
-clap_mangen = { optional = true, version = "0.2.30" }
+clap_mangen = { optional = true, version = "0.2.31" }
 kutil-cli-macros = { optional = true, version = "=0.0.7" }
 owo-colors = { optional = true, version = "4.2.3" }
 time = { optional = true, version = "0.3.44", features = ["macros"] }
@@ -35,7 +35,7 @@ tracing-subscriber = { optional = true, version = "0.3.20", features = [
 
 # http
 axum = { optional = true, version = "0.8.6" }
-axum-extra = { optional = true, version = "0.10.3" }
+axum-extra = { optional = true, version = "0.12.0" }
 axum-server = { optional = true, version = "0.7.2" }
 base64-simd = { optional = true, version = "0.8.0" }
 duration-str = { optional = true, version = "0.17.0" }
@@ -43,10 +43,10 @@ http = { optional = true, version = "1.3.1" }
 http-body = { optional = true, version = "1.0.1" }
 httpdate = { optional = true, version = "1.0.3" }
 moka = { optional = true, version = "0.12.11", features = ["future"] }
-rustls = { optional = true, version = "0.23.32" }
+rustls = { optional = true, version = "0.23.34" }
 rustls-acme = { optional = true, version = "0.14.1", features = ["axum"] }
 rustls-pemfile = { optional = true, version = "2.2.0" }
-rustls-pki-types = { optional = true, version = "1.12.0" }
+rustls-pki-types = { optional = true, version = "1.13.0" }
 thiserror = { optional = true, version = "2.0.17" }
 tokio-util = { optional = true, version = "0.7.16", features = ["io-util"] }
 tower = { optional = true, version = "0.5.2" }
@@ -63,10 +63,11 @@ utf8-chars = { optional = true, version = "3.0.5" }
 bimap = { optional = true, version = "0.6.3" }
 bytes = { optional = true, version = "1.10.1" }
 bytestring = { optional = true, version = "1.5.0" }
+ctrlc = { optional = true, version = "3.5.1" }
 kutil-std-macros = { optional = true, version = "=0.0.3" }
 num-traits = { optional = true, version = "0.2.19" }
 papaya = { optional = true, version = "0.2.3" }
-rapidhash = { optional = true, version = "4.1.0", features = ["unsafe"] }
+rapidhash = { optional = true, version = "4.1.1", features = ["unsafe"] }
 
 # cli, http, transcoding
 tracing = { optional = true, version = "0.1.41" }
@@ -89,6 +90,7 @@ tower-http = { version = "0.6.6", features = ["trace"] }
 tracing-subscriber = { version = "0.3.20", features = [
     "env-filter",
     "local-time",
+    "parking_lot",
 ] }
 
 [features]
@@ -175,7 +177,7 @@ blocking = []
 async = []
 
 ## Standard library utilities.
-std = ["dep:num-traits"]
+std = ["dep:num-traits", "dep:ctrlc"]
 ## Enable bimap
 bimap = ["dep:bimap"]
 ## Enable fast collections.

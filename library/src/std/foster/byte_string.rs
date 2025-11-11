@@ -64,13 +64,13 @@ impl AsRef<str> for FosterByteString {
 impl PartialEq for FosterByteString {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string == other_string,
-            (Self::Owned(string), Self::Fostered(other_string)) => string.as_ref() == *other_string,
-            (Self::Fostered(string), Self::Owned(other_string)) => {
-                let other_string: &str = &other_string;
-                *string == other_string
+            (Self::Owned(left), Self::Owned(right)) => left == right,
+            (Self::Owned(left), Self::Fostered(right)) => left.as_ref() == *right,
+            (Self::Fostered(left), Self::Owned(right)) => {
+                let right: &str = &right;
+                *left == right
             }
-            (Self::Fostered(string), Self::Fostered(other_string)) => string.eq(other_string),
+            (Self::Fostered(left), Self::Fostered(right)) => left.eq(right),
         }
     }
 }
@@ -80,13 +80,13 @@ impl Eq for FosterByteString {}
 impl PartialOrd for FosterByteString {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string.partial_cmp(other_string),
-            (Self::Owned(string), Self::Fostered(other_string)) => (***string).partial_cmp(*other_string),
-            (Self::Fostered(string), Self::Owned(other_string)) => {
-                let other_string: &str = &other_string;
-                (*string).partial_cmp(other_string)
+            (Self::Owned(left), Self::Owned(right)) => left.partial_cmp(right),
+            (Self::Owned(left), Self::Fostered(right)) => (***left).partial_cmp(*right),
+            (Self::Fostered(left), Self::Owned(right)) => {
+                let right: &str = &right;
+                (*left).partial_cmp(right)
             }
-            (Self::Fostered(string), Self::Fostered(other_string)) => string.partial_cmp(other_string),
+            (Self::Fostered(left), Self::Fostered(right)) => left.partial_cmp(right),
         }
     }
 }
@@ -94,10 +94,10 @@ impl PartialOrd for FosterByteString {
 impl Ord for FosterByteString {
     fn cmp(&self, other: &Self) -> Ordering {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string.cmp(other_string),
-            (Self::Owned(string), Self::Fostered(other_string)) => (***string).cmp(other_string),
-            (Self::Fostered(string), Self::Owned(other_string)) => (*string).cmp(other_string),
-            (Self::Fostered(string), Self::Fostered(other_string)) => string.cmp(other_string),
+            (Self::Owned(left), Self::Owned(right)) => left.cmp(right),
+            (Self::Owned(left), Self::Fostered(right)) => (***left).cmp(right),
+            (Self::Fostered(left), Self::Owned(right)) => (*left).cmp(right),
+            (Self::Fostered(left), Self::Fostered(right)) => left.cmp(right),
         }
     }
 }

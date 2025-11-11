@@ -25,6 +25,10 @@ pub mod io;
 #[cfg(feature = "std")]
 pub mod std;
 
+/// TLS utilities.
+#[cfg(feature = "tls")]
+pub mod tls;
+
 /// Transcoding utilities.
 #[cfg(feature = "transcoding")]
 pub mod transcoding;

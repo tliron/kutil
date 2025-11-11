@@ -15,10 +15,6 @@ pub mod cache;
 #[cfg(feature = "file")]
 pub mod file;
 
-/// TLS utilities.
-#[cfg(feature = "tls")]
-pub mod tls;
-
 /// Tower utilities.
 #[cfg(feature = "tower")]
 pub mod tower;

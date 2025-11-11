@@ -14,17 +14,23 @@ use {
 ///
 /// Clones will retain the same coordination.
 #[derive(Clone, Debug)]
-pub struct Shutdown {
+pub struct Shutdown<AddressT>
+where
+    AddressT: Address,
+{
     /// Axum server handle.
     ///
     /// Clones will retain the same coordination.
-    pub handle: Handle,
+    pub handle: Handle<AddressT>,
 
     /// Grace period. [None] means indefinite.
     pub grace_period: Option<Duration>,
 }
 
-impl Shutdown {
+impl<AddressT> Shutdown<AddressT>
+where
+    AddressT: Address,
+{
     /// Constructor.
     pub fn new(grace_period: Option<Duration>) -> Self {
         Self { handle: Default::default(), grace_period }
@@ -48,7 +54,10 @@ impl Shutdown {
     /// need several tokens, clone the one you get here.
     ///
     /// Also returns the [JoinHandle] for the listener task.
-    pub fn cancellation_token(&self) -> (CancellationToken, JoinHandle<()>) {
+    pub fn cancellation_token(&self) -> (CancellationToken, JoinHandle<()>)
+    where
+        AddressT: 'static + Send,
+    {
         let token = CancellationToken::default();
 
         let shutdown = self.clone();
@@ -73,7 +82,10 @@ impl Shutdown {
     /// need several senders, clone the one you get here.
     ///
     /// Also returns the [JoinHandle] for the listener task.
-    pub fn on_channel(&self) -> (Sender<()>, JoinHandle<()>) {
+    pub fn on_channel(&self) -> (Sender<()>, JoinHandle<()>)
+    where
+        AddressT: 'static + Send,
+    {
         let (sender, receiver) = channel();
         let shutdown = self.clone();
 
@@ -100,7 +112,10 @@ impl Shutdown {
     /// Shutdown on signals.
     ///
     /// Returns the [JoinHandle] for the listener task.
-    pub fn on_signals(&self) -> io::Result<JoinHandle<()>> {
+    pub fn on_signals(&self) -> io::Result<JoinHandle<()>>
+    where
+        AddressT: 'static + Send,
+    {
         #[cfg(all(not(unix), not(windows)))]
         {
             tracing::warn!("signals not supported on this platform");
@@ -142,7 +157,10 @@ impl Shutdown {
 ///
 /// Expects the [Shutdown] to be available as state. See
 /// [Router::with_state](::axum::Router::with_state).
-pub async fn shutdown_handler(State(shutdown): State<Shutdown>) -> Response {
+pub async fn shutdown_handler<AddressT>(State(shutdown): State<Shutdown<AddressT>>) -> Response
+where
+    AddressT: Address,
+{
     tracing::info!("shutting down");
     shutdown.shutdown();
     StatusCode::NO_CONTENT.into_response()

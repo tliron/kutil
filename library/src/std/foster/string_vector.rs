@@ -34,13 +34,13 @@ impl HasLength for FosterStringVector {
 impl PartialEq for FosterStringVector {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (Self::Owned(strings), Self::Owned(other_strings)) => strings == other_strings,
+            (Self::Owned(left), Self::Owned(right)) => left == right,
 
-            (Self::Owned(strings), Self::Fostered(other_strings)) => {
-                if strings.len() == other_strings.len() {
+            (Self::Owned(left), Self::Fostered(right)) => {
+                if left.len() == right.len() {
                     let mut equal = true;
-                    for (index, string) in strings.iter().enumerate() {
-                        if string != other_strings[index] {
+                    for (index, left) in left.iter().enumerate() {
+                        if left != right[index] {
                             equal = false;
                             break;
                         }
@@ -51,11 +51,11 @@ impl PartialEq for FosterStringVector {
                 }
             }
 
-            (Self::Fostered(strings), Self::Owned(other_strings)) => {
-                if strings.len() == other_strings.len() {
+            (Self::Fostered(left), Self::Owned(right)) => {
+                if left.len() == right.len() {
                     let mut equal = true;
-                    for (index, string) in strings.iter().enumerate() {
-                        if string != &other_strings[index] {
+                    for (index, left) in left.iter().enumerate() {
+                        if left != &right[index] {
                             equal = false;
                             break;
                         }
@@ -66,7 +66,7 @@ impl PartialEq for FosterStringVector {
                 }
             }
 
-            (Self::Fostered(strings), Self::Fostered(other_strings)) => strings == other_strings,
+            (Self::Fostered(left), Self::Fostered(right)) => left == right,
         }
     }
 }
@@ -78,47 +78,47 @@ impl PartialOrd for FosterStringVector {
         // See: core::slice::cmp::SlicePartialOrd
 
         match (self, other) {
-            (Self::Owned(strings), Self::Owned(other_strings)) => strings.partial_cmp(other_strings),
+            (Self::Owned(left), Self::Owned(right)) => left.partial_cmp(right),
 
-            (Self::Owned(strings), Self::Fostered(other_strings)) => {
-                let strings_length = strings.len();
-                let other_strings_length = other_strings.len();
-                let length = min(strings_length, other_strings_length);
+            (Self::Owned(left), Self::Fostered(right)) => {
+                let left_length = left.len();
+                let right_length = right.len();
+                let length = min(left_length, right_length);
 
                 // enable compiler bound check elimination
-                let strings_bounded = &strings[..length];
-                let other_strings_bounded = &other_strings[..length];
+                let left_bounded = &left[..length];
+                let right_bounded = &right[..length];
 
                 for index in 0..length {
-                    match strings_bounded[index].as_str().partial_cmp(other_strings_bounded[index]) {
+                    match left_bounded[index].as_str().partial_cmp(right_bounded[index]) {
                         Some(Ordering::Equal) => {}
                         not_equal => return not_equal,
                     }
                 }
 
-                strings_length.partial_cmp(&other_strings_length)
+                left_length.partial_cmp(&right_length)
             }
 
-            (Self::Fostered(strings), Self::Owned(other_strings)) => {
-                let strings_length = strings.len();
-                let other_strings_length = other_strings.len();
-                let length = min(strings_length, other_strings_length);
+            (Self::Fostered(left), Self::Owned(right)) => {
+                let left_length = left.len();
+                let right_length = right.len();
+                let length = min(left_length, right_length);
 
                 // enable compiler bound check elimination
-                let strings_bounded = &strings[..length];
-                let other_strings_bounded = &other_strings[..length];
+                let left_bounded = &left[..length];
+                let right_bounded = &right[..length];
 
                 for index in 0..length {
-                    match strings_bounded[index].partial_cmp(other_strings_bounded[index].as_str()) {
+                    match left_bounded[index].partial_cmp(right_bounded[index].as_str()) {
                         Some(Ordering::Equal) => {}
                         not_equal => return not_equal,
                     }
                 }
 
-                strings_length.partial_cmp(&other_strings_length)
+                left_length.partial_cmp(&right_length)
             }
 
-            (Self::Fostered(strings), Self::Fostered(other_strings)) => strings.partial_cmp(other_strings),
+            (Self::Fostered(left), Self::Fostered(right)) => left.partial_cmp(right),
         }
     }
 }
@@ -128,47 +128,47 @@ impl Ord for FosterStringVector {
         // See: core::slice::cmp::SliceOrd
 
         match (self, other) {
-            (Self::Owned(strings), Self::Owned(other_strings)) => strings.cmp(other_strings),
+            (Self::Owned(left), Self::Owned(right)) => left.cmp(right),
 
-            (Self::Owned(strings), Self::Fostered(other_strings)) => {
-                let strings_length = strings.len();
-                let other_strings_length = other_strings.len();
-                let length = min(strings_length, other_strings_length);
+            (Self::Owned(left), Self::Fostered(right)) => {
+                let left_length = left.len();
+                let right_length = right.len();
+                let length = min(left_length, right_length);
 
                 // enable compiler bound check elimination
-                let strings_bounded = &strings[..length];
-                let other_strings_bounded = &other_strings[..length];
+                let left_bounded = &left[..length];
+                let right_bounded = &right[..length];
 
                 for index in 0..length {
-                    match strings_bounded[index].as_str().cmp(other_strings_bounded[index]) {
+                    match left_bounded[index].as_str().cmp(right_bounded[index]) {
                         Ordering::Equal => {}
                         not_equal => return not_equal,
                     }
                 }
 
-                strings_length.cmp(&other_strings_length)
+                left_length.cmp(&right_length)
             }
 
-            (Self::Fostered(strings), Self::Owned(other_strings)) => {
-                let strings_length = strings.len();
-                let other_strings_length = other_strings.len();
-                let length = min(strings_length, other_strings_length);
+            (Self::Fostered(left), Self::Owned(right)) => {
+                let left_length = left.len();
+                let right_length = right.len();
+                let length = min(left_length, right_length);
 
                 // enable compiler bound check elimination
-                let strings_bounded = &strings[..length];
-                let other_strings_bounded = &other_strings[..length];
+                let left_bounded = &left[..length];
+                let right_bounded = &right[..length];
 
                 for index in 0..length {
-                    match strings_bounded[index].cmp(other_strings_bounded[index].as_str()) {
+                    match left_bounded[index].cmp(right_bounded[index].as_str()) {
                         Ordering::Equal => {}
                         not_equal => return not_equal,
                     }
                 }
 
-                strings_length.cmp(&other_strings_length)
+                left_length.cmp(&right_length)
             }
 
-            (Self::Fostered(strings), Self::Fostered(other_strings)) => strings.cmp(other_strings),
+            (Self::Fostered(left), Self::Fostered(right)) => left.cmp(right),
         }
     }
 }

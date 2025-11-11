@@ -45,10 +45,10 @@ impl AsRef<str> for FosterString {
 impl PartialEq for FosterString {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string == other_string,
-            (Self::Owned(string), Self::Fostered(other_string)) => string == other_string,
-            (Self::Fostered(string), Self::Owned(other_string)) => string == other_string,
-            (Self::Fostered(string), Self::Fostered(other_string)) => string == other_string,
+            (Self::Owned(left), Self::Owned(right)) => left == right,
+            (Self::Owned(left), Self::Fostered(right)) => left == right,
+            (Self::Fostered(left), Self::Owned(right)) => left == right,
+            (Self::Fostered(left), Self::Fostered(right)) => left == right,
         }
     }
 }
@@ -58,10 +58,10 @@ impl Eq for FosterString {}
 impl PartialOrd for FosterString {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string.partial_cmp(other_string),
-            (Self::Owned(string), Self::Fostered(other_string)) => string.as_str().partial_cmp(*other_string),
-            (Self::Fostered(string), Self::Owned(other_string)) => (*string).partial_cmp(other_string.as_str()),
-            (Self::Fostered(string), Self::Fostered(other_string)) => string.partial_cmp(other_string),
+            (Self::Owned(left), Self::Owned(right)) => left.partial_cmp(right),
+            (Self::Owned(left), Self::Fostered(right)) => left.as_str().partial_cmp(*right),
+            (Self::Fostered(left), Self::Owned(right)) => (*left).partial_cmp(right.as_str()),
+            (Self::Fostered(left), Self::Fostered(right)) => left.partial_cmp(right),
         }
     }
 }
@@ -69,10 +69,10 @@ impl PartialOrd for FosterString {
 impl Ord for FosterString {
     fn cmp(&self, other: &Self) -> Ordering {
         match (self, other) {
-            (Self::Owned(string), Self::Owned(other_string)) => string.cmp(other_string),
-            (Self::Owned(string), Self::Fostered(other_string)) => string.as_str().cmp(*other_string),
-            (Self::Fostered(string), Self::Owned(other_string)) => (*string).cmp(other_string.as_str()),
-            (Self::Fostered(string), Self::Fostered(other_string)) => string.cmp(other_string),
+            (Self::Owned(left), Self::Owned(right)) => left.cmp(right),
+            (Self::Owned(left), Self::Fostered(right)) => left.as_str().cmp(*right),
+            (Self::Fostered(left), Self::Owned(right)) => (*left).cmp(right.as_str()),
+            (Self::Fostered(left), Self::Fostered(right)) => left.cmp(right),
         }
     }
 }

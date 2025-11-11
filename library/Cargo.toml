@@ -21,7 +21,7 @@ keywords = ["kutil", "cli", "http", "io", "transcoding"]
 anstream = { optional = true, version = "0.6.21" }
 anstyle = { optional = true, version = "1.0.13" }
 build-info = { optional = true, version = "0.0.42" }
-clap = { optional = true, version = "4.5.51", features = ["derive"] }
+clap = { optional = true, version = "4.5.53", features = ["derive"] }
 clap_complete_command = { optional = true, version = "0.6.1" }
 clap_mangen = { optional = true, version = "0.2.31" }
 owo-colors = { optional = true, version = "4.2.3" }
@@ -33,19 +33,15 @@ tracing-subscriber = { optional = true, version = "0.3.20", features = [
 ] }
 
 # http
-axum = { optional = true, version = "0.8.6" }
-axum-extra = { optional = true, version = "0.12.1" }
-axum-server = { optional = true, version = "0.7.2" }
+axum = { optional = true, version = "0.8.7" }
+axum-extra = { optional = true, version = "0.12.2" }
+axum-server = { optional = true, version = "0.7.3" }
 base64-simd = { optional = true, version = "0.8.0" }
 duration-str = { optional = true, version = "0.17.0" }
-http = { optional = true, version = "1.3.1" }
+http = { optional = true, version = "1.4.0" }
 http-body = { optional = true, version = "1.0.1" }
 httpdate = { optional = true, version = "1.0.3" }
 moka = { optional = true, version = "0.12.11", features = ["future"] }
-rustls = { optional = true, version = "0.23.35" }
-rustls-acme = { optional = true, version = "0.14.1", features = ["axum"] }
-rustls-pemfile = { optional = true, version = "2.2.0" }
-rustls-pki-types = { optional = true, version = "1.13.0" }
 thiserror = { optional = true, version = "2.0.17" }
 tokio-util = { optional = true, version = "0.7.17", features = ["io-util"] }
 tower = { optional = true, version = "0.5.2" }
@@ -56,11 +52,11 @@ urlencoding = { optional = true, version = "2.1.3" }
 # io
 futures = { optional = true, version = "0.3.31" }
 netdev = { optional = true, version = "0.39.0" }
-utf8-chars = { optional = true, version = "3.0.5" }
+utf8-chars = { optional = true, version = "3.0.6" }
 
 # std
 bimap = { optional = true, version = "0.6.3" }
-bytes = { optional = true, version = "1.10.1" }
+bytes = { optional = true, version = "1.11.0" }
 bytestring = { optional = true, version = "1.5.0" }
 ctrlc = { optional = true, version = "3.5.1" }
 kutil-std-macros = { optional = true, version = "=0.0.4" }
@@ -68,18 +64,23 @@ num-traits = { optional = true, version = "0.2.19" }
 papaya = { optional = true, version = "0.2.3" }
 rapidhash = { optional = true, version = "4.1.1", features = ["unsafe"] }
 
-# cli, http, transcoding
+# tls
+rustls = { optional = true, version = "0.23.35" }
+rustls-acme = { optional = true, version = "0.14.1", features = ["axum"] }
+rustls-pemfile = { optional = true, version = "2.2.0" }
+rustls-pki-types = { optional = true, version = "1.13.0" }
+rustls-platform-verifier = { optional = true, version = "0.6.2" }
+webpki-roots = { optional = true, version = "1.0.4" }
+
+# cli, http, tls, transcoding
 tracing = { optional = true, version = "0.1.41" }
 
 # http, transcoding
-async-compression = { optional = true, version = "0.4.33" }
+async-compression = { optional = true, version = "0.4.34" }
 pin-project = { optional = true, version = "1.1.10" }
 
 # http, io, transcoding
 tokio = { optional = true, version = "1.48.0" }
-
-# temporary hack: axum breaks with hyper 1.7.0
-hyper = { optional = true, version = "=1.6.0" }
 
 [build-dependencies]
 # cli
@@ -131,7 +132,6 @@ http = [
     "dep:tokio-util",
     "dep:url",
     "dep:urlencoding",
-    "dep:hyper",
     "io",
     "std",
     "async",
@@ -147,6 +147,7 @@ axum = [
     "dep:axum",
     "dep:axum-extra",
     "dep:axum-server",
+    "axum-server/tls-rustls",
     "tokio/signal",
     "tower/util",
 ]
@@ -154,13 +155,6 @@ axum = [
 file = ["tower", "dep:tower-http"]
 ## Moka implementation for cache.
 moka = ["dep:moka"]
-## TLS utilities for axum.
-tls = [
-    "dep:rustls",
-    "dep:rustls-pemfile",
-    "dep:rustls-pki-types",
-    "axum-server/tls-rustls",
-]
 ## Tower utilities.
 tower = ["dep:tower"]
 
@@ -190,6 +184,22 @@ serde = ["bytes?/serde", "bytestring?/serde"]
 ## Enable immutable implementations, e.g. `Bytes` and `ByteString`.
 immutable = ["dep:bytes", "dep:bytestring"]
 
+## TLS utilities.
+tls = [
+    "dep:rustls",
+    "dep:rustls-pemfile",
+    "dep:rustls-pki-types",
+    "dep:tracing",
+]
+tls-platform = [
+    "tls",
+    "dep:rustls-platform-verifier"
+]
+tls-self-contained = [
+    "tls",
+    "dep:webpki-roots",
+]
+
 ## Transcoding utilities.
 transcoding = [
     "dep:async-compression",
@@ -209,6 +219,10 @@ transcoding = [
 
 ## Include procedural macros for `derive`.
 derive = ["dep:kutil-std-macros"]
+
+## Don't manually enable this!
+## It's for situations where we have all features enabled
+_blanket = []
 
 [[example]]
 name = "join_conjunction"

@@ -1,4 +1,19 @@
-/// If the expression is [Err], give the error and optionally use a default expression.
+/// Like [Result::ok] but gives [Err] to a receiver.
+#[macro_export]
+macro_rules! ok_give {
+    ( $result:expr, $errors:expr $(,)? ) => {
+        match $result {
+            ::std::result::Result::Ok(ok) => ::std::option::Option::Some(ok),
+            ::std::result::Result::Err(error) => {
+                use $crate::std::error::ErrorReceiver;
+                $errors.give_error(error.into())?;
+                ::std::option::Option::None
+            }
+        }
+    };
+}
+
+/// Like [Result::unwrap_or] and [Result::unwrap_or_default] but gives [Err] to a receiver.
 #[macro_export]
 macro_rules! unwrap_or_give {
     ( $result:expr, $errors:expr, $default:expr $(,)? ) => {
@@ -13,29 +28,30 @@ macro_rules! unwrap_or_give {
     };
 
     ( $result:expr, $errors:expr $(,)? ) => {
-        if let ::std::result::Result::Err(error) = $result {
-            use $crate::std::error::ErrorReceiver;
-            $errors.give_error(error.into())?;
-        }
+        $crate::unwrap_or_give!($result, $errors, ::std::default::Default::default())
     };
 }
 
-/// If the expression is [Err], give the error and return an expression.
+/// Like [Result::unwrap] but gives [Err] to a receiver and returns [Ok].
 ///
-/// Usage is similar to the `?` operator.
+/// Works somewhat similarly to the `?` operator.
 #[macro_export]
-macro_rules! unwrap_or_give_and_return {
-    ( $result:expr, $errors:expr, $return:expr $(,)? ) => {
+macro_rules! must_unwrap_give {
+    ( $result:expr, $errors:expr, $default:expr $(,)? ) => {
         match $result {
             ::std::result::Result::Ok(ok) => ok,
             ::std::result::Result::Err(error) => {
                 use $crate::std::error::ErrorReceiver;
                 $errors.give_error(error.into())?;
-                return $return;
+                return ::std::result::Result::Ok($default);
             }
         }
+    };
+
+    ( $result:expr, $errors:expr $(,)? ) => {
+        $crate::must_unwrap_give!($result, $errors, ::std::default::Default::default())
     };
 }
 
 #[allow(unused_imports)]
-pub use {unwrap_or_give, unwrap_or_give_and_return};
+pub use {must_unwrap_give, ok_give, unwrap_or_give};

@@ -1,0 +1,15 @@
+I've spent a few weeks evaluating rootcause for our massive pile of code. After gathering the feedback, we decided against using rootcause and instead continue to develop our home-grown solution, which we will share more loudly when it's ready. :) The main reason we are not using rootcase that its scope is a bit too big and complex for our needs. Fair enough, right? But the other reason is that people found it hard to understand (see the other issue I opened, #88, about documentation). And specifically folk found it hard to read code using rootcause. The function names seem to do a poor job at explaining what is actually happening.
+
+With that in mind, I will humbly make some recommendations on name changes. I tried them out myself by aliasing the existing rootcause functions using extension traits and it made the code easier to understand, at least for me. Here's the list of suggestions:
+
+* `Report`. People interpreted this to mean a summary or collection of errors, which it isn't necessarily. There is also a `ReportCollection` type. The difference is not easy to understand from their names. I understand that it's hard to come up with a good name for "error" that is not already used and do not have a single suggestion. (Our library uses `Problem`).
+
+* `context()` -> `in_context()`. This was the main one people had trouble with. Without reading the documentation it's entirely unclear what this function does. Does it "attach" a context? No, in fact it creates a new report and sets the current report as a child of it. I imagine you copied anyhow here, but it's not great in anyhow, too. Moreover, it does something quite different from what anyhow does! I think "in_context" makes it clearer that *this* report will be *in* something new.
+
+* `context_to()` -> `convert_into()`. We used this mechanism a lot in our evaluation, and again people were very confused. Does it convert the context to the argument? But there is no argument? Actually, it doesn't necessarily have anything to do with the context. The `ReportConversion` mechanism, on which it relies, takes a report as input and returns a new report, and it can really do anything it wants to it. So let's just call it "convert". We prefer "into" to "to", because the practice in Rust is that "into" involves moving the value, which this does. Generally speaking, this mechanism is really a more specific (and explicit) version of the std `Into`. 
+
+* `context_transform()` -> `replace_context()`. Confusing again. We are not actually mutating the context in any way. We are replacing it with a new one. So why not just call it that?
+
+* `context_custom()` -> `in_context_with_handler()`. Unclear what we are customizing. What is a non-custom context? Aren't they all custom? Oh, reading the documentation this is about using a different handler. So, let's have the name reflect that.
+
+* `current_context()` -> `context()`. What does "current" mean here? Is this about thread locality? Confusing. Luckily, if you rename the existing `context()` to `in_context()` as I suggest above then it frees `context()` to be the new `current_context()` :)

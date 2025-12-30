@@ -64,7 +64,7 @@ impl TlsContainer {
         self.targets.insert(
             sni,
             SniResolverTarget::Key(
-                certified_key_from_pem(certificates_pem, private_key_pem).map_err(TlsContainerError::new_from)?.into(),
+                certified_key_from_pem(certificates_pem, private_key_pem).map_err(TlsContainerError::new)?.into(),
             ),
         );
         Ok(())

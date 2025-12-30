@@ -4,7 +4,7 @@ edition = "2024"
 name = "kutil"
 description = "Kutil utilities collection"
 version = "0.0.5"
-rust-version = "1.91"
+rust-version = "1.92"
 
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/tliron/kutil"
@@ -13,7 +13,7 @@ authors = ["Tal Liron"]
 
 readme = "../README.md"
 
-categories = []                                                 # https://crates.io/category_slugs
+categories = ["development-tools"] # https://crates.io/category_slugs
 keywords = ["kutil", "cli", "http", "io", "transcoding"]
 
 [dependencies]
@@ -21,7 +21,7 @@ keywords = ["kutil", "cli", "http", "io", "transcoding"]
 anstream = { optional = true, version = "0.6.21" }
 anstyle = { optional = true, version = "1.0.13" }
 build-info = { optional = true, version = "0.0.42" }
-clap = { optional = true, version = "4.5.53", features = ["derive"] }
+clap = { optional = true, version = "4.5.54", features = ["derive"] }
 clap_complete_command = { optional = true, version = "0.6.1" }
 clap_mangen = { optional = true, version = "0.2.31" }
 owo-colors = { optional = true, version = "4.2.3" }
@@ -33,16 +33,15 @@ tracing-subscriber = { optional = true, version = "0.3.22", features = [
 ] }
 
 # http
-axum = { optional = true, version = "0.8.7" }
-axum-extra = { optional = true, version = "0.12.2" }
+axum = { optional = true, version = "0.8.8" }
 axum-server = { optional = true, version = "0.8.0" }
 base64-simd = { optional = true, version = "0.8.0" }
+derive_more = { optional = true, version = "2.1.1", features = ["display", "error", "from"] }
 duration-str = { optional = true, version = "0.18.0" }
 http = { optional = true, version = "1.4.0" }
 http-body = { optional = true, version = "1.0.1" }
 httpdate = { optional = true, version = "1.0.3" }
-moka = { optional = true, version = "0.12.11", features = ["future"] }
-thiserror = { optional = true, version = "2.0.17" }
+moka = { optional = true, version = "0.12.12", features = ["future"] }
 tokio-util = { optional = true, version = "0.7.17", features = ["io-util"] }
 tower = { optional = true, version = "0.5.2" }
 tower-http = { optional = true, version = "0.6.8", features = ["fs"] }
@@ -51,10 +50,11 @@ urlencoding = { optional = true, version = "2.1.3" }
 
 # io
 futures = { optional = true, version = "0.3.31" }
-netdev = { optional = true, version = "0.39.0" }
+netdev = { optional = true, version = "0.40.0" }
 utf8-chars = { optional = true, version = "3.0.6" }
 
 # std
+backtrace = { optional = true, version = "0.3.76" }
 bimap = { optional = true, version = "0.6.3" }
 bytes = { optional = true, version = "1.11.0" }
 bytestring = { optional = true, version = "1.5.0" }
@@ -62,45 +62,41 @@ ctrlc = { optional = true, version = "3.5.1" }
 kutil-std-macros = { optional = true, version = "=0.0.4" }
 num-traits = { optional = true, version = "0.2.19" }
 papaya = { optional = true, version = "0.2.3" }
-rapidhash = { optional = true, version = "4.1.1", features = ["unsafe"] }
+rapidhash = { optional = true, version = "4.2.0", features = ["unsafe"] }
 
 # tls
 rustls = { optional = true, version = "0.23.35" }
 rustls-acme = { optional = true, version = "0.14.1", features = ["axum"] }
 rustls-pemfile = { optional = true, version = "2.2.0" }
-rustls-pki-types = { optional = true, version = "1.13.1" }
+rustls-pki-types = { optional = true, version = "1.13.2" }
 rustls-platform-verifier = { optional = true, version = "0.6.2" }
-webpki-roots = { optional = true, version = "1.0.4" }
+webpki-roots = { optional = true, version = "1.0.5" }
 
 # cli, http, tls, transcoding
-tracing = { optional = true, version = "0.1.43" }
+tracing = { optional = true, version = "0.1.44" }
 
 # http, transcoding
-async-compression = { optional = true, version = "0.4.35" }
+async-compression = { optional = true, version = "0.4.36" }
 pin-project = { optional = true, version = "1.1.10" }
 
 # http, io, transcoding
-tokio = { optional = true, version = "1.48.0" }
+tokio = { optional = true, version = "1.49.0" }
+
+problemo = { optional = true, version = "=0.0.2" }
 
 [build-dependencies]
 # cli
 build-info-build = { optional = true, version = "0.0.42" }
 
 [dev-dependencies]
-# For examples/tower_caching.*
-tokio = { version = "1.48.0", features = ["macros", "rt-multi-thread"] }
-tower-http = { version = "0.6.8", features = ["trace"] }
-tracing-subscriber = { version = "0.3.22", features = [
-    "env-filter",
-    "local-time",
-    "parking_lot",
-] }
+derive_more = { version = "2.1.1", features = ["display", "error", "from"] }
 
 [features]
 ## CLI utilities.
 cli = [
     "dep:anstream",
     "dep:owo-colors",
+    "dep:problemo",
     "dep:time",
     "dep:tracing",
     "dep:tracing-journald",
@@ -120,13 +116,13 @@ clap = [
 http = [
     "dep:async-compression",
     "dep:base64-simd",
+    "dep:derive_more",
     "dep:duration-str",
     "dep:http",
     "dep:http-body",
     "dep:httpdate",
     "dep:moka",
     "dep:pin-project",
-    "dep:thiserror",
     "dep:tracing",
     "dep:tokio",
     "dep:tokio-util",
@@ -145,7 +141,6 @@ acme = ["dep:rustls-acme"]
 ## Axum utilities.
 axum = [
     "dep:axum",
-    "dep:axum-extra",
     "dep:axum-server",
     "axum-server/tls-rustls",
     "tokio/signal",
@@ -153,10 +148,6 @@ axum = [
 ]
 ## File utilities for Tower.
 file = ["tower", "dep:tower-http"]
-## Moka implementation for cache.
-moka = ["dep:moka"]
-## Tower utilities.
-tower = ["dep:tower"]
 
 ## I/O utilities.
 io = [
@@ -174,7 +165,7 @@ blocking = []
 async = []
 
 ## Standard library utilities.
-std = ["dep:num-traits", "dep:ctrlc"]
+std = ["dep:backtrace", "dep:ctrlc", "dep:num-traits"]
 ## Enable bimap
 bimap = ["dep:bimap"]
 ## Enable fast collections.
@@ -227,14 +218,6 @@ _blanket = []
 [[example]]
 name = "join_conjunction"
 required-features = ["std"]
-
-[[example]]
-name = "tower_caching_basic"
-required-features = ["http", "tower", "axum", "moka"]
-
-[[example]]
-name = "tower_caching_advanced"
-required-features = ["http", "tower", "axum", "moka"]
 
 # https://stackoverflow.com/a/61417700
 [package.metadata.docs.rs]

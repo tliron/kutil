@@ -1,7 +1,4 @@
-use super::super::super::{
-    super::std::{foster::*, immutable::*},
-    cache::*,
-};
+use super::super::super::super::std::{foster::*, immutable::*};
 
 use std::{convert::*, str::*};
 
@@ -14,13 +11,6 @@ use std::{convert::*, str::*};
 pub struct MediaTypeSegment(pub FosterByteString);
 
 delegate_newtype_of_foster_byte_string!(MediaTypeSegment);
-
-impl CacheWeight for MediaTypeSegment {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<MediaTypeSegment>();
-        SELF_SIZE + self.0.len()
-    }
-}
 
 impl FromStr for MediaTypeSegment {
     type Err = Infallible;

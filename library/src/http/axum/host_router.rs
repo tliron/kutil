@@ -1,8 +1,10 @@
-use super::super::super::std::{collections::*, immutable::*};
+use super::super::{
+    super::std::{collections::*, immutable::*},
+    headers::*,
+};
 
 use {
     ::axum::{extract::*, http::StatusCode, response::*, *},
-    axum_extra::extract::*,
     tower::ServiceExt,
 };
 
@@ -73,13 +75,16 @@ impl HostRouter {
 ///
 /// Expects the [HostRouter] to be available as state. See
 /// [Router::with_state](::axum::Router::with_state).
-pub async fn host_router_handler(
-    State(mut host_router): State<HostRouter>,
-    Host(host_and_optional_port): Host,
-    request: Request,
-) -> Response {
-    host_router
-        .handle(host_and_optional_port.into(), request)
-        .await
-        .unwrap_or_else(|| StatusCode::NOT_FOUND.into_response())
+pub async fn host_router_handler(State(mut host_router): State<HostRouter>, request: Request) -> Response {
+    // Host(host_and_optional_port2): Host,
+    // See: https://github.com/tokio-rs/axum/issues/3442
+
+    // TODO: fail if there is no host?
+    let host_and_optional_port = request
+        .headers()
+        .x_forwarded_host_or_host()
+        .or_else(|| request.uri().authority().map(|authority| authority.host().into()))
+        .unwrap_or_default();
+
+    host_router.handle(host_and_optional_port, request).await.unwrap_or_else(|| StatusCode::NOT_FOUND.into_response())
 }

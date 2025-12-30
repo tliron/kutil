@@ -1,7 +1,7 @@
 use super::super::iter::*;
 
 /// Join with conjunction.
-pub trait JoinConjunction<'own> {
+pub trait JoinConjunction<'this> {
     /// Join iterated strings as human-readable in English with a conjunction
     /// and an Oxford comma.
     ///
@@ -11,15 +11,15 @@ pub trait JoinConjunction<'own> {
     /// * `one or two`
     /// * `one, two, or three`
     /// * `one, two, three, or four`
-    fn join_conjunction(&'own self, conjunction: &str) -> String;
+    fn join_conjunction(&'this self, conjunction: &str) -> String;
 }
 
-impl<'own, ItemT, IterableT> JoinConjunction<'own> for IterableT
+impl<'this, ItemT, IterableT> JoinConjunction<'this> for IterableT
 where
-    ItemT: 'own + AsRef<str>,
-    &'own IterableT: 'own + IntoIterator<Item = ItemT>,
+    ItemT: 'this + AsRef<str>,
+    &'this IterableT: 'this + IntoIterator<Item = ItemT>,
 {
-    fn join_conjunction(&'own self, conjunction: &str) -> String {
+    fn join_conjunction(&'this self, conjunction: &str) -> String {
         let mut options = String::default();
 
         let mut has_at_least_two = false;

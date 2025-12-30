@@ -1,14 +1,7 @@
 mod captured;
-mod errors;
-mod fail_fast;
-mod io;
-mod macros;
-mod message;
-mod receiver;
-mod receiver_ref;
-mod variant;
+mod many;
+mod string;
+mod with_path;
 
 #[allow(unused_imports)]
-pub use {
-    captured::*, errors::*, fail_fast::*, io::*, macros::*, message::*, receiver::*, receiver_ref::*, variant::*,
-};
+pub use {captured::*, many::*, string::*, with_path::*};

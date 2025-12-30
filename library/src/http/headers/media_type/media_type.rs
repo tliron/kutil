@@ -1,8 +1,5 @@
 use super::{
-    super::super::{
-        super::std::{borrow::*, foster::*, string::*},
-        cache::*,
-    },
+    super::super::super::std::{borrow::*, foster::*, string::*},
     segment::*,
 };
 
@@ -69,13 +66,6 @@ impl IntoOwned for MediaType {
                 }
             },
         }
-    }
-}
-
-impl CacheWeight for MediaType {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<MediaType>();
-        SELF_SIZE + self.main.cache_weight() + self.subtype.cache_weight()
     }
 }
 

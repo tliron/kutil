@@ -197,14 +197,14 @@ impl Hash for FosterByteStringVector {
     }
 }
 
-impl<'own> IntoIterator for &'own FosterByteStringVector {
-    type Item = &'own str;
+impl<'this> IntoIterator for &'this FosterByteStringVector {
+    type Item = &'this str;
     type IntoIter = FosterIterator<
-        &'own str,
-        &'own ByteString,
-        &'own &'static str,
-        Iter<'own, ByteString>,
-        Iter<'own, &'static str>,
+        &'this str,
+        &'this ByteString,
+        &'this &'static str,
+        Iter<'this, ByteString>,
+        Iter<'this, &'static str>,
     >;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -294,14 +294,14 @@ macro_rules! delegate_newtype_of_foster_byte_string_vector {
             }
         }
 
-        impl<'own> ::std::iter::IntoIterator for &'own $type {
-            type Item = &'own str;
+        impl<'this> ::std::iter::IntoIterator for &'this $type {
+            type Item = &'this str;
             type IntoIter = $crate::std::foster::FosterIterator<
-                &'own str,
-                &'own $crate::std::immutable::ByteString,
-                &'own &'static str,
-                ::std::slice::Iter<'own, $crate::std::immutable::ByteString>,
-                ::std::slice::Iter<'own, &'static str>,
+                &'this str,
+                &'this $crate::std::immutable::ByteString,
+                &'this &'static str,
+                ::std::slice::Iter<'this, $crate::std::immutable::ByteString>,
+                ::std::slice::Iter<'this, &'static str>,
             >;
 
             fn into_iter(self) -> Self::IntoIter {

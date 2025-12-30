@@ -9,10 +9,7 @@ use super::{
     body::*,
 };
 
-use {
-    http::{header::*, *},
-    http_body::*,
-};
+use {http::*, http_body::*};
 
 //
 // IntoTranscodingResponse

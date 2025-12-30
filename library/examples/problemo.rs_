@@ -1,0 +1,67 @@
+use {
+    derive_more::*,
+    kutil::std::error::*,
+    std::{io, sync::*},
+};
+
+pub fn main() {
+    if let Err(problem) = do_some_io() {
+        for error in &problem.errors {
+            println!("error: {:?}", error);
+        }
+
+        if problem.has_type::<io::Error>() {
+            println!();
+            println!("has i/o!");
+        }
+
+        if problem.has_type::<LowLevelErrors>() {
+            println!();
+            println!("has low-level!");
+        }
+
+        if problem.has(LowLevelErrors::IO) {
+            println!();
+            println!("has low-level i/o!");
+        }
+
+        for attachment in problem.attachments::<String>() {
+            println!();
+            println!("string attachment: {}", attachment);
+        }
+
+        if let Some(attachment) = problem.attachment::<String>() {
+            println!();
+            println!("first string attachment: {}", attachment);
+        }
+
+        for backtrace in problem.attachments::<backtrace::Backtrace>() {
+            println!();
+            print!("backtrace:\n{:?}", backtrace);
+        }
+    }
+}
+
+#[derive(Debug, Display, Error, PartialEq, Eq)]
+enum LowLevelErrors {
+    #[display("low-level I/O")]
+    IO,
+    //Concurrency,
+}
+
+fn do_some_io() -> Result<String, Problem> {
+    hello(true)?;
+
+    let locked = Mutex::new(100);
+    let _locked = locked.lock().into_concurrency_problem()?;
+
+    std::fs::read_to_string("").via(LowLevelErrors::IO).with("att1".to_string())
+}
+
+fn do_some_io2() -> Result<String, Problem> {
+    std::fs::read_to_string("").into_problem()
+}
+
+fn hello(ok: bool) -> Result<String, Problem> {
+    if ok { Ok("hello".into()) } else { Err("hello failed".into_problem().with("att1".to_string())) }
+}

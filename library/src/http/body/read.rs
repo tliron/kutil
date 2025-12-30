@@ -10,10 +10,10 @@ use super::{
 };
 
 use {
+    derive_more::*,
     http::*,
     http_body::*,
     std::{io, result::Result, string::*},
-    thiserror::*,
     tokio::io::*,
 };
 
@@ -110,7 +110,6 @@ where
         // We'll try to read just one more byte to see if we're complete
         match reader.read_u8().await {
             Ok(byte) => {
-                println!("!!!!!!!!!!!!!!!!! {:?} {}", read_size, bytes.len());
                 let (body, remainder, _trailers) = reader.into_inner();
 
                 // Push back the byte we read and the remainder
@@ -166,13 +165,13 @@ where
 //
 
 /// [ReadBodyIntoBytes] error.
-#[derive(Debug, Error)]
+#[derive(Debug, Display, Error, From)]
 pub enum ReadBodyError {
     /// I/O.
-    #[error("I/O: {0}")]
-    IO(#[from] io::Error),
+    #[display("I/O: {_0}")]
+    IO(io::Error),
 
     /// UTF8.
-    #[error("UTF8: {0}")]
-    UTF8(#[from] FromUtf8Error),
+    #[display("UTF8: {_0}")]
+    UTF8(FromUtf8Error),
 }

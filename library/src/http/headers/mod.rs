@@ -12,6 +12,6 @@ mod preferences;
 
 #[allow(unused_imports)]
 pub use {
-    bool::*, conditional::*, custom::*, date::*, encoding::*, etag::*, headers::*, into::*, language::*, media_type::*,
-    preferences::*,
+    bool::*, conditional::*, custom::*, date::*, encoding::*, etag::*, headers::*, http::header::*, into::*,
+    language::*, media_type::*, preferences::*,
 };

@@ -64,7 +64,7 @@ impl TlsContainer {
         self.targets.insert(
             sni,
             SniResolverTarget::Key(
-                certified_key_from_pem(certificates_pem, private_key_pem).map_err(TlsContainerError::new_from)?.into(),
+                certified_key_from_pem(certificates_pem, private_key_pem).map_err(TlsContainerError::new)?.into(),
             ),
         );
         Ok(())
@@ -94,7 +94,7 @@ impl TlsContainer {
     /// Creates a [SniResolver].
     pub fn resolver(&self) -> Result<SniResolver, TlsContainerError> {
         if self.targets.is_empty() {
-            Err("no targets".into())
+            Err(TlsContainerError::new("no targets"))
         } else {
             Ok(if self.targets.len() == 1 {
                 SniResolver::Single(self.targets.values().next().expect("iter not empty").clone())

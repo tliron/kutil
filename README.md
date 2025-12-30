@@ -1,5 +1,5 @@
 [![crates.io](https://img.shields.io/crates/v/kutil?color=%23227700)](https://crates.io/crates/kutil)
-[![docs.rs](https://img.shields.io/badge/docs.rs-latest?color=grey)](https://docs.rs/kutil/latest/kutil/)
+[![docs.rs](https://img.shields.io/badge/docs.rs-latest?color=grey)](https://docs.rs/kutil)
 
 Kutil
 =====
@@ -20,7 +20,6 @@ Highlights:
   * [Easy access to headers](https://docs.rs/kutil/latest/kutil/http/trait.HeaderValues.html)
   * Conditional HTTP and content negotiation
   * [Read body into bytes](https://docs.rs/kutil/latest/kutil/http/trait.ReadBodyIntoBytes.html)
-  * [Response caching layer with integrated encoding (compression) for Tower](https://docs.rs/kutil/latest/kutil/http/tower/caching/struct.CachingLayer.html)
 * [io](https://docs.rs/kutil/latest/kutil/io/index.html):
   * Adapters and utilities for `Read`, `Stream`, and Tokio's `AsyncRead`
   * [IP address discovery for servers](https://docs.rs/kutil/latest/kutil/io/network/ip/index.html) (dual-stack IPv6 and IPv4)

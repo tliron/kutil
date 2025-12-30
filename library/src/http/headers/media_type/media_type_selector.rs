@@ -1,9 +1,6 @@
 use super::{
     super::{
-        super::{
-            super::std::{borrow::*, foster::*, string::*},
-            cache::*,
-        },
+        super::super::std::{borrow::*, foster::*, string::*},
         preferences::*,
     },
     media_type::*,
@@ -92,13 +89,6 @@ impl IntoOwned for MediaTypeSelector {
                 }
             },
         }
-    }
-}
-
-impl CacheWeight for MediaTypeSelector {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<MediaTypeSelector>();
-        SELF_SIZE + self.main.cache_weight() + self.subtype.cache_weight()
     }
 }
 

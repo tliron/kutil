@@ -1,7 +1,4 @@
-use super::super::{
-    super::std::{collections::*, foster::*},
-    cache::*,
-};
+use super::super::super::std::{collections::*, foster::*};
 
 use {
     http::header::*,
@@ -30,17 +27,6 @@ impl Language {
     pub fn parse_list(representation: &str) -> Option<FastHashSet<Self>> {
         let languages: FastHashSet<_> = representation.split(",").map(|language| language.trim().into()).collect();
         if !languages.is_empty() { Some(languages) } else { None }
-    }
-}
-
-impl CacheWeight for Language {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<Language>();
-        let mut size = SELF_SIZE;
-        for subtag in &self.0 {
-            size += subtag.len();
-        }
-        size
     }
 }
 

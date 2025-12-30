@@ -1,39 +1,31 @@
-use super::run_error::*;
-
-use {
-    anstream::eprintln,
-    owo_colors::OwoColorize,
-    std::{fmt, process::*},
-};
+use {anstream::eprintln, owo_colors::*, problemo::*, std::process::*};
 
 //
 // Runner
 //
 
 /// A replacement for `main`.
-pub type Runner<ErrorT> = fn() -> Result<(), ErrorT>;
+pub type Runner = fn() -> Result<(), Problem>;
 
 /// Runs a [Runner] and returns an [ExitCode].
 ///
-/// Unhandled errors will be displayed in red in stderr.
-pub fn run<ErrorT>(run: Runner<ErrorT>) -> ExitCode
-where
-    ErrorT: RunError + fmt::Display,
-{
+/// If the runner is [Ok] it will return [ExitCode::SUCCESS].
+///
+/// Otherwise it will use an [ExitCode] if attached to the [Problem], defaulting to
+/// [ExitCode::FAILURE]. Note that it possible to attach [ExitCode::SUCCESS].
+///
+/// The problem's [Display] representation will be printed in red to stderr.
+pub fn run(run: Runner) -> ExitCode {
     match run() {
         Ok(_) => ExitCode::SUCCESS,
 
-        Err(error) => {
-            let (handled, code) = error.handle();
-
-            if !handled {
-                let error = error.to_string();
-                if !error.is_empty() {
-                    eprintln!("{}", error.red());
-                }
+        Err(problem) => {
+            let message = problem.to_string();
+            if !message.is_empty() {
+                eprintln!("{}", format!("{}", message.trim_end_matches('\n')).red());
             }
 
-            ExitCode::from(code)
+            problem.into()
         }
     }
 }

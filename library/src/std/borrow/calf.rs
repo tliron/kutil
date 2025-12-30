@@ -14,15 +14,15 @@ use std::borrow::*;
 /// Note that after coming up with the idea for this, I discovered that someone
 /// else did, too. Check out [maybe-owned](https://github.com/rustonaut/maybe-owned)
 /// for an identical type that comes with a zillion more trait implementations.
-pub enum Calf<'own, BorrowedT> {
+pub enum Calf<'this, BorrowedT> {
     /// Borrowed.
-    Borrowed(&'own BorrowedT),
+    Borrowed(&'this BorrowedT),
 
     /// Owned.
     Owned(BorrowedT),
 }
 
-impl<'own, BorrowedT> Calf<'own, BorrowedT> {
+impl<'this, BorrowedT> Calf<'this, BorrowedT> {
     /// Are we borrowed?
     pub fn is_borrowed(&self) -> bool {
         matches!(self, Self::Borrowed(_))
@@ -34,7 +34,7 @@ impl<'own, BorrowedT> Calf<'own, BorrowedT> {
     }
 }
 
-impl<'own, BorrowedT> Borrow<BorrowedT> for Calf<'own, BorrowedT> {
+impl<'this, BorrowedT> Borrow<BorrowedT> for Calf<'this, BorrowedT> {
     fn borrow(&self) -> &BorrowedT {
         match self {
             Self::Owned(owned) => owned,
@@ -45,7 +45,7 @@ impl<'own, BorrowedT> Borrow<BorrowedT> for Calf<'own, BorrowedT> {
 
 // Experimental
 
-impl<'own, BorrowedT, OwnedT> Calf<'own, BorrowedT>
+impl<'this, BorrowedT, OwnedT> Calf<'this, BorrowedT>
 where
     BorrowedT: ToOwned<Owned = OwnedT>,
 {
@@ -58,9 +58,9 @@ where
     }
 }
 
-impl<'own, BorrowedT> BorrowMut<BorrowedT> for Calf<'own, BorrowedT>
+impl<'this, BorrowedT> BorrowMut<BorrowedT> for Calf<'this, BorrowedT>
 where
-    &'own BorrowedT: AsMut<&'own mut BorrowedT>,
+    &'this BorrowedT: AsMut<&'this mut BorrowedT>,
 {
     fn borrow_mut(&mut self) -> &mut BorrowedT {
         match self {
@@ -70,7 +70,7 @@ where
     }
 }
 
-impl<'own, BorrowedT, OwnedT> ToOwned for Calf<'own, BorrowedT>
+impl<'this, BorrowedT, OwnedT> ToOwned for Calf<'this, BorrowedT>
 where
     BorrowedT: ToOwned<Owned = OwnedT>,
     OwnedT: Borrow<Self>,
@@ -87,11 +87,11 @@ where
 
 // Conversions
 
-impl<'own, BorrowedT> From<Cow<'own, BorrowedT>> for Calf<'own, BorrowedT>
+impl<'this, BorrowedT> From<Cow<'this, BorrowedT>> for Calf<'this, BorrowedT>
 where
     BorrowedT: ToOwned<Owned = BorrowedT>,
 {
-    fn from(cow: Cow<'own, BorrowedT>) -> Self {
+    fn from(cow: Cow<'this, BorrowedT>) -> Self {
         match cow {
             Cow::Owned(owned) => Calf::Owned(owned),
             Cow::Borrowed(borrowed) => Calf::Borrowed(borrowed),
@@ -99,11 +99,11 @@ where
     }
 }
 
-impl<'own, BorrowedT> Into<Cow<'own, BorrowedT>> for Calf<'own, BorrowedT>
+impl<'this, BorrowedT> Into<Cow<'this, BorrowedT>> for Calf<'this, BorrowedT>
 where
     BorrowedT: ToOwned<Owned = BorrowedT>,
 {
-    fn into(self) -> Cow<'own, BorrowedT> {
+    fn into(self) -> Cow<'this, BorrowedT> {
         match self {
             Self::Owned(owned) => Cow::Owned(owned),
             Self::Borrowed(borrowed) => Cow::Borrowed(borrowed),

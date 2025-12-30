@@ -8,16 +8,9 @@ mod uri;
 #[cfg(feature = "axum")]
 pub mod axum;
 
-/// Cache utilities.
-pub mod cache;
-
 /// File utilities.
 #[cfg(feature = "file")]
 pub mod file;
-
-/// Tower utilities.
-#[cfg(feature = "tower")]
-pub mod tower;
 
 /// Transcoding utilities.
 pub mod transcoding;

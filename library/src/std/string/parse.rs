@@ -14,4 +14,4 @@ pub trait ParseStr<ParsedT> {
 // ParseError
 //
 
-message_error!(ParseError, "parse");
+string_error!(ParseError, "parse");

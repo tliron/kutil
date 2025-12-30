@@ -45,7 +45,7 @@ impl<SelectionT> Preferences<SelectionT> {
     /// Select the most preferred allowance.
     ///
     /// If there is a tie, we will go by the order of allowances.
-    pub fn best<'own>(&'own self, allowances: &'own [SelectionT]) -> Option<&'own SelectionT>
+    pub fn best<'this>(&'this self, allowances: &'this [SelectionT]) -> Option<&'this SelectionT>
     where
         SelectionT: Hash + Eq,
     {
@@ -92,7 +92,7 @@ impl<SelectionT> Preferences<SelectionT> {
     ///
     /// If no best preference can be found we'll return the first allowance. `allowances` must not
     /// be empty!
-    pub fn best_or_first<'own>(&'own self, allowances: &'own [SelectionT]) -> &'own SelectionT
+    pub fn best_or_first<'this>(&'this self, allowances: &'this [SelectionT]) -> &'this SelectionT
     where
         SelectionT: Hash + Eq,
     {
@@ -101,12 +101,12 @@ impl<SelectionT> Preferences<SelectionT> {
     }
 
     // Selections with equal weight.
-    fn select_tied<'own>(
-        &'own self,
+    fn select_tied<'this>(
+        &'this self,
         index: usize,
         weight: Weight,
-        allowances: &'own [SelectionT],
-    ) -> FastHashSet<&'own SelectionT>
+        allowances: &'this [SelectionT],
+    ) -> FastHashSet<&'this SelectionT>
     where
         SelectionT: Hash + Eq,
     {

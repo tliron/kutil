@@ -18,6 +18,18 @@ use {
     std::{any::*, fmt, str::*, time::*},
 };
 
+/// `Content-Digest` HTTP response header.
+///
+/// Non-standard. See
+/// [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest).
+pub const CONTENT_DIGEST: HeaderName = HeaderName::from_static("content-digest");
+
+/// `X-Forwarded-Host` HTTP response header.
+///
+/// Non-standard. See
+/// [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Forwarded-Host).
+pub const X_FORWARDED_HOST: HeaderName = HeaderName::from_static("x-forwarded-host");
+
 //
 // HeaderValues
 //
@@ -262,6 +274,11 @@ pub trait HeaderValues {
         }
 
         None
+    }
+
+    /// Parse the [`X-Forwarded-Host`](X_FORWARDED_HOST) or [`Host`](HOST) request header values.
+    fn x_forwarded_host_or_host(&self) -> Option<ByteString> {
+        self.byte_string_value(X_FORWARDED_HOST).or_else(|| self.byte_string_value(HOST))
     }
 
     // Response headers

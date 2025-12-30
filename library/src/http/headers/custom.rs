@@ -11,13 +11,6 @@ pub const XX_CACHE_DURATION: HeaderName = HeaderName::from_static("xx-cache-dura
 /// `XX-Encode` HTTP response header specifying whether to encode the response.
 pub const XX_ENCODE: HeaderName = HeaderName::from_static("xx-encode");
 
-/// `Content-Digest` HTTP response header.
-///
-/// See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Digest).
-///
-/// Non-standard but ... just in case.
-pub const CONTENT_DIGEST: HeaderName = HeaderName::from_static("content-digest");
-
 //
 // CustomHeaderValues
 //

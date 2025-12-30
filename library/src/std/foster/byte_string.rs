@@ -115,7 +115,7 @@ impl Hash for FosterByteString {
 }
 
 impl fmt::Display for FosterByteString {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Self::Owned(string) => string.fmt(formatter),
             Self::Fostered(string) => string.fmt(formatter),
@@ -219,7 +219,7 @@ macro_rules! delegate_newtype_of_foster_byte_string {
         }
 
         impl ::std::fmt::Display for $type {
-            fn fmt(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                 ::std::fmt::Display::fmt(&self.0, formatter)
             }
         }

@@ -27,7 +27,7 @@ impl<SelectionT> fmt::Display for Preference<SelectionT>
 where
     SelectionT: fmt::Display,
 {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self.weight {
             Weight::MAX => fmt::Display::fmt(&self.selector, formatter),
             weight => write!(formatter, "{};{}", self.selector, weight),

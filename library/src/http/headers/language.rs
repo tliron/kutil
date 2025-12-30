@@ -1,7 +1,4 @@
-use super::super::{
-    super::std::{collections::*, foster::*},
-    cache::*,
-};
+use super::super::super::std::{collections::*, foster::*};
 
 use {
     http::header::*,
@@ -33,17 +30,6 @@ impl Language {
     }
 }
 
-impl CacheWeight for Language {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<Language>();
-        let mut size = SELF_SIZE;
-        for subtag in &self.0 {
-            size += subtag.len();
-        }
-        size
-    }
-}
-
 impl Into<HeaderValue> for Language {
     fn into(self) -> HeaderValue {
         HeaderValue::from_str(&self.to_string()).expect("language in HTTP header")
@@ -65,7 +51,7 @@ impl FromStr for Language {
 }
 
 impl fmt::Display for Language {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match &self.0 {
             Foster::Owned(subtags) => fmt::Display::fmt(&subtags.join("-"), formatter),
             Foster::Fostered(subtags) => fmt::Display::fmt(&subtags.join("-"), formatter),

@@ -1,7 +1,4 @@
-use {
-    http::*,
-    std::{fmt, result::Result},
-};
+use {http::*, std::result::Result};
 
 //
 // MapErrorStatusCode
@@ -18,11 +15,11 @@ pub trait MapErrorStatusCode<OkT> {
 
 impl<OkT, FromErrorT> MapErrorStatusCode<OkT> for Result<OkT, FromErrorT>
 where
-    FromErrorT: fmt::Display,
+    FromErrorT: ToString,
 {
     fn map_err_status_code(self, status: StatusCode, message: &str) -> Result<OkT, StatusCode> {
         self.map_err(|error| {
-            tracing::error!("{}: {}", message, error);
+            tracing::error!("{}: {}", message, error.to_string());
             status
         })
     }

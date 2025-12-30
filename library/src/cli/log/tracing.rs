@@ -9,7 +9,7 @@ use {
 // RFC 3339 with subseconds
 // Or ISO 8601 with fewer subsecond digits
 // See: https://time-rs.github.io/book/api/well-known-format-descriptions.html
-const TIME_FORMAT: &[BorrowedFormatItem<'_>] = format_description!(
+const TIME_FORMAT: &[BorrowedFormatItem] = format_description!(
     "[year]-[month]-[day]T[hour]:[minute]:[second].[subsecond digits:3][offset_hour]:[offset_minute]"
 );
 

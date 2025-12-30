@@ -78,7 +78,7 @@ where
 
     fn poll_frame(
         mut self: Pin<&mut Self>,
-        context: &mut Context<'_>,
+        context: &mut Context,
     ) -> Poll<Option<Result<Frame<Self::Data>, Self::Error>>> {
         // Return remaining buffer as data frame
         if self.buffer.has_remaining() {

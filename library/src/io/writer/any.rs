@@ -6,8 +6,8 @@ use std::{any::*, io};
 // AnyWriter
 //
 
-/// [io::Write] that can be converted to [Any](std::any::Any).
-pub trait AnyWriter: IntoAny + io::Write {}
+/// [io::Write] that can be converted to an [Any].
+pub trait AnyWriter: io::Write + ToAny + Send {}
 
 /// Common reference type for [AnyWriter].
 pub type AnyWriterRef = Box<dyn AnyWriter>;
@@ -16,8 +16,8 @@ pub type AnyWriterRef = Box<dyn AnyWriter>;
 // AnySeekWriter
 //
 
-/// [io::Seek] + [io::Write] that can be converted to [Any](std::any::Any).
-pub trait AnySeekWriter: IntoAny + io::Seek + io::Write {}
+/// [io::Seek] + [io::Write] that can be converted to an [Any].
+pub trait AnySeekWriter: io::Seek + io::Write + ToAny + Send {}
 
 /// Common reference type for [AnySeekWriter].
 pub type AnySeekWriterRef = Box<dyn AnySeekWriter>;
@@ -39,20 +39,20 @@ impl<WriteT> AnyWriterWrapper<WriteT> {
     }
 }
 
-impl<WriteT> IntoAny for AnyWriterWrapper<WriteT>
+impl<WriteT> ToAny for AnyWriterWrapper<WriteT>
 where
     WriteT: Any,
 {
-    fn into_any(&mut self) -> Box<dyn Any> {
+    fn to_any(&mut self) -> Option<Box<dyn Any>> {
         // We defined inner as Option to make it simple to "take" it
         // It's just replaced with None whereas std::mem::take would need to replace it with WriteT::default()
-        Box::new(self.inner.take().expect("initialized"))
+        self.inner.take().map(|inner| Box::new(inner) as Box<dyn Any>)
     }
 }
 
-impl<WriteT> AnyWriter for AnyWriterWrapper<WriteT> where WriteT: Any + io::Write {}
+impl<WriteT> AnyWriter for AnyWriterWrapper<WriteT> where WriteT: io::Write + Any + Send {}
 
-impl<WriteT> AnySeekWriter for AnyWriterWrapper<WriteT> where WriteT: Any + io::Seek + io::Write {}
+impl<WriteT> AnySeekWriter for AnyWriterWrapper<WriteT> where WriteT: io::Seek + io::Write + Any + Send {}
 
 impl<WriteT> io::Seek for AnyWriterWrapper<WriteT>
 where
@@ -88,7 +88,7 @@ pub trait IntoAnyWriter<WriteT> {
 
 impl<WriteT> IntoAnyWriter<WriteT> for WriteT
 where
-    WriteT: Any + io::Write,
+    WriteT: io::Write + Any,
 {
     fn into_any_writer(self) -> Box<AnyWriterWrapper<WriteT>> {
         AnyWriterWrapper::new(self)

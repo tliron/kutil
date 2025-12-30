@@ -9,5 +9,4 @@ cd "$ROOT"
 # https://stackoverflow.com/a/61417700
 
 RUSTDOCFLAGS="--cfg docsrs" \
-cargo +nightly doc --all-features \
-    --package=kutil
+cargo +nightly doc --all-features --package=kutil --no-deps --open

@@ -1,13 +1,7 @@
 // https://stackoverflow.com/a/61417700
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_docs)]
-
-/*!
-The word "kutil" means "do-it-yourselfer" in Czech.
-
-For more information and usage examples see the
-[home page](https://github.com/tliron/kutil).
-*/
+#![doc = include_str!("../../README.md")]
 
 /// CLI utilities.
 #[cfg(feature = "cli")]
@@ -20,6 +14,10 @@ pub mod http;
 /// I/O utilities.
 #[cfg(feature = "io")]
 pub mod io;
+
+/// pyo3 utilities.
+#[cfg(feature = "pyo3")]
+pub mod pyo3;
 
 /// Standard library utilities.
 #[cfg(feature = "std")]

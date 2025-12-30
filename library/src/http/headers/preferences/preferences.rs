@@ -45,8 +45,13 @@ impl<SelectionT> Preferences<SelectionT> {
     /// Select the most preferred allowance.
     ///
     /// If there is a tie, we will go by the order of allowances.
-    pub fn best<'own>(&'own self, allowances: &'own [SelectionT]) -> Option<&'own SelectionT>
+    pub fn best<'context, 'allowances, 'selection>(
+        &'context self,
+        allowances: &'allowances [SelectionT],
+    ) -> Option<&'selection SelectionT>
     where
+        'context: 'selection,
+        'allowances: 'selection,
         SelectionT: Hash + Eq,
     {
         if self.0.is_empty() {
@@ -92,8 +97,13 @@ impl<SelectionT> Preferences<SelectionT> {
     ///
     /// If no best preference can be found we'll return the first allowance. `allowances` must not
     /// be empty!
-    pub fn best_or_first<'own>(&'own self, allowances: &'own [SelectionT]) -> &'own SelectionT
+    pub fn best_or_first<'context, 'allowances, 'selection>(
+        &'context self,
+        allowances: &'allowances [SelectionT],
+    ) -> &'selection SelectionT
     where
+        'context: 'selection,
+        'allowances: 'selection,
         SelectionT: Hash + Eq,
     {
         assert!(allowances.len() > 0);
@@ -101,13 +111,15 @@ impl<SelectionT> Preferences<SelectionT> {
     }
 
     // Selections with equal weight.
-    fn select_tied<'own>(
-        &'own self,
+    fn select_tied<'context, 'allowances, 'selection>(
+        &'context self,
         index: usize,
         weight: Weight,
-        allowances: &'own [SelectionT],
-    ) -> FastHashSet<&'own SelectionT>
+        allowances: &'allowances [SelectionT],
+    ) -> FastHashSet<&'selection SelectionT>
     where
+        'context: 'selection,
+        'allowances: 'selection,
         SelectionT: Hash + Eq,
     {
         let mut tied = FastHashSet::with_capacity(self.0.len() - index);

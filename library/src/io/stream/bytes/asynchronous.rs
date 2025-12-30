@@ -59,11 +59,7 @@ where
     StreamT: Stream<Item = Result<Bytes, ErrorT>> + Unpin,
     ErrorT: Into<CapturedError>,
 {
-    fn poll_read(
-        mut self: Pin<&mut Self>,
-        context: &mut Context<'_>,
-        buffer: &mut ReadBuf<'_>,
-    ) -> Poll<io::Result<()>> {
+    fn poll_read(mut self: Pin<&mut Self>, context: &mut Context, buffer: &mut ReadBuf) -> Poll<io::Result<()>> {
         // Copy as much as we can from the remainder
         if self.remainder.has_remaining() {
             let size = min(buffer.remaining_mut(), self.remainder.remaining());

@@ -89,7 +89,7 @@ impl Weight {
 }
 
 impl fmt::Display for Weight {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self.0 {
             1000 => fmt::Display::fmt("q=1", formatter),
 

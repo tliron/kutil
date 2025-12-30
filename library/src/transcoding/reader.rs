@@ -49,7 +49,7 @@ impl<ReadT> AsyncRead for TranscodingReader<ReadT>
 where
     ReadT: AsyncRead,
 {
-    fn poll_read(self: Pin<&mut Self>, context: &mut Context<'_>, buffer: &mut ReadBuf<'_>) -> Poll<io::Result<()>> {
+    fn poll_read(self: Pin<&mut Self>, context: &mut Context, buffer: &mut ReadBuf) -> Poll<io::Result<()>> {
         match self.project() {
             Projected::Passthrough(reader) => reader.poll_read(context, buffer),
             Projected::EncodeBrotli(reader) => reader.poll_read(context, buffer),

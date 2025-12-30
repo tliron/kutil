@@ -6,16 +6,16 @@ use std::{collections::*, hash::*};
 
 /// [Iterator] for [HashMap] in the sort order of the keys.
 #[derive(Clone, Debug)]
-pub struct IterateByKeyOrder<'own, KeyT, ValueT, HasherT> {
-    inner: &'own HashMap<KeyT, ValueT, HasherT>,
-    keys: Vec<&'own KeyT>,
+pub struct IterateByKeyOrder<'inner, KeyT, ValueT, HasherT> {
+    inner: &'inner HashMap<KeyT, ValueT, HasherT>,
+    keys: Vec<&'inner KeyT>,
     size: usize,
     index: usize,
 }
 
-impl<'own, KeyT, ValueT, HasherT> IterateByKeyOrder<'own, KeyT, ValueT, HasherT> {
+impl<'inner, KeyT, ValueT, HasherT> IterateByKeyOrder<'inner, KeyT, ValueT, HasherT> {
     /// Constructor.
-    pub fn new(inner: &'own HashMap<KeyT, ValueT, HasherT>) -> Self
+    pub fn new(inner: &'inner HashMap<KeyT, ValueT, HasherT>) -> Self
     where
         KeyT: Clone + Ord,
     {
@@ -26,12 +26,12 @@ impl<'own, KeyT, ValueT, HasherT> IterateByKeyOrder<'own, KeyT, ValueT, HasherT>
     }
 }
 
-impl<'own, KeyT, ValueT, HasherT> Iterator for IterateByKeyOrder<'own, KeyT, ValueT, HasherT>
+impl<'inner, KeyT, ValueT, HasherT> Iterator for IterateByKeyOrder<'inner, KeyT, ValueT, HasherT>
 where
     KeyT: Eq + Hash,
     HasherT: BuildHasher,
 {
-    type Item = (&'own KeyT, &'own ValueT);
+    type Item = (&'inner KeyT, &'inner ValueT);
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.index >= self.size {

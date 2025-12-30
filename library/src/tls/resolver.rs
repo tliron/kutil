@@ -24,7 +24,7 @@ pub enum SniResolver {
 }
 
 impl ResolvesServerCert for SniResolver {
-    fn resolve(&self, client_hello: ClientHello<'_>) -> Option<Arc<CertifiedKey>> {
+    fn resolve(&self, client_hello: ClientHello) -> Option<Arc<CertifiedKey>> {
         match self {
             Self::BySNI(targets) => match client_hello.server_name() {
                 Some(sni) => match targets.get(sni) {
@@ -69,7 +69,7 @@ pub enum SniResolverTarget {
 }
 
 impl ResolvesServerCert for SniResolverTarget {
-    fn resolve(&self, client_hello: ClientHello<'_>) -> Option<Arc<rustls::sign::CertifiedKey>> {
+    fn resolve(&self, client_hello: ClientHello) -> Option<Arc<rustls::sign::CertifiedKey>> {
         match self {
             Self::Key(certified_key) => {
                 tracing::trace!("key");

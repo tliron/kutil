@@ -130,7 +130,7 @@ impl FromStr for ByteCount {
 }
 
 impl fmt::Display for ByteCount {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         write!(formatter, "{} bytes", self.0)
     }
 }

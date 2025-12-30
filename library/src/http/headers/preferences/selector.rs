@@ -1,5 +1,3 @@
-use super::super::super::cache::*;
-
 use std::{cmp::*, fmt, hash::*, str::*};
 
 //
@@ -31,7 +29,7 @@ impl<SelectionT> Selector<SelectionT> {
     ///
     /// If we are [Any](Selector::Any) we will select all candidates. Otherwise we will select
     /// either one or none of the candidates.
-    pub fn select<'own>(&'own self, candidates: &'own [SelectionT]) -> Vec<&'own SelectionT>
+    pub fn select<'context>(&'context self, candidates: &'context [SelectionT]) -> Vec<&'context SelectionT>
     where
         SelectionT: Eq,
     {
@@ -52,19 +50,6 @@ impl<SelectionT> Selector<SelectionT> {
 impl<SelectionT> IsSpecific for Selector<SelectionT> {
     fn is_specific(&self) -> bool {
         matches!(self, Self::Specific(_))
-    }
-}
-
-impl<SelectionT> CacheWeight for Selector<SelectionT>
-where
-    SelectionT: CacheWeight,
-{
-    fn cache_weight(&self) -> usize {
-        let mut size = size_of::<Self>();
-        if let Self::Specific(selection) = self {
-            size += selection.cache_weight();
-        }
-        size
     }
 }
 
@@ -135,7 +120,7 @@ impl<SelectionT> fmt::Display for Selector<SelectionT>
 where
     SelectionT: fmt::Display,
 {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Self::Any => fmt::Display::fmt("*", formatter),
             Self::Specific(selector) => fmt::Display::fmt(selector, formatter),

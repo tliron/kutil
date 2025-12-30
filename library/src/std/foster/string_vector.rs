@@ -194,10 +194,10 @@ impl Hash for FosterStringVector {
     }
 }
 
-impl<'own> IntoIterator for &'own FosterStringVector {
-    type Item = &'own str;
+impl<'this> IntoIterator for &'this FosterStringVector {
+    type Item = &'this str;
     type IntoIter =
-        FosterIterator<&'own str, &'own String, &'own &'static str, Iter<'own, String>, Iter<'own, &'static str>>;
+        FosterIterator<&'this str, &'this String, &'this &'static str, Iter<'this, String>, Iter<'this, &'static str>>;
 
     fn into_iter(self) -> Self::IntoIter {
         match self {
@@ -286,14 +286,14 @@ macro_rules! delegate_newtype_of_foster_string_vector {
             }
         }
 
-        impl<'own> ::std::iter::IntoIterator for &'own $type {
-            type Item = &'own str;
+        impl<'this> ::std::iter::IntoIterator for &'this $type {
+            type Item = &'this str;
             type IntoIter = ::kutil_std::foster::FosterIterator<
-                &'own str,
-                &'own ::std::string::String,
-                &'own &'static str,
-                ::std::slice::Iter<'own, ::std::string::String>,
-                ::std::slice::Iter<'own, &'static str>,
+                &'this str,
+                &'this ::std::string::String,
+                &'this &'static str,
+                ::std::slice::Iter<'this, ::std::string::String>,
+                ::std::slice::Iter<'this, &'static str>,
             >;
 
             fn into_iter(self) -> Self::IntoIter {

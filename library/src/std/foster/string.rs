@@ -90,7 +90,7 @@ impl Hash for FosterString {
 }
 
 impl fmt::Display for FosterString {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Self::Owned(string) => fmt::Display::fmt(string, formatter),
             Self::Fostered(string) => fmt::Display::fmt(string, formatter),
@@ -186,7 +186,7 @@ macro_rules! delegate_newtype_of_foster_string {
         }
 
         impl ::std::fmt::Display for $type {
-            fn fmt(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                 ::std::fmt::Display::fmt(&self.0, formatter)
             }
         }

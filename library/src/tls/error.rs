@@ -4,4 +4,4 @@ use super::super::std::error::*;
 // TlsContainerError
 //
 
-message_error!(TlsContainerError, "TLS container");
+string_error!(TlsContainerError, "TLS container");

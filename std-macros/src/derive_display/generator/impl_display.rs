@@ -60,7 +60,7 @@ impl Generator {
                 ::std::fmt::Display for #enum_name #enum_generics
                 #where_clause
             {
-                fn fmt(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+                fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
                     ::std::fmt::Display::fmt(self.as_str(), formatter)
                 }
             }

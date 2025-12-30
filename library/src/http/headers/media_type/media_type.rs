@@ -1,8 +1,5 @@
 use super::{
-    super::super::{
-        super::std::{borrow::*, foster::*, string::*},
-        cache::*,
-    },
+    super::super::super::std::{borrow::*, foster::*, string::*},
     segment::*,
 };
 
@@ -72,13 +69,6 @@ impl IntoOwned for MediaType {
     }
 }
 
-impl CacheWeight for MediaType {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<MediaType>();
-        SELF_SIZE + self.main.cache_weight() + self.subtype.cache_weight()
-    }
-}
-
 impl Into<HeaderValue> for MediaType {
     fn into(self) -> HeaderValue {
         HeaderValue::from_str(&self.to_string()).expect("media type in HTTP header")
@@ -97,7 +87,7 @@ impl FromStr for MediaType {
 }
 
 impl fmt::Display for MediaType {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         write!(formatter, "{}/{}", self.main, self.subtype)
     }
 }

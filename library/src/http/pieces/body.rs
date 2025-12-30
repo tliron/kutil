@@ -50,7 +50,7 @@ impl<ErrorT, BodyT> fmt::Debug for ErrorWithBodyPieces<ErrorT, BodyT>
 where
     ErrorT: fmt::Debug,
 {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(&self.error, formatter)
     }
 }
@@ -59,7 +59,7 @@ impl<ErrorT, BodyT> fmt::Display for ErrorWithBodyPieces<ErrorT, BodyT>
 where
     ErrorT: fmt::Display,
 {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         fmt::Display::fmt(&self.error, formatter)
     }
 }

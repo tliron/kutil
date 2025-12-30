@@ -1,8 +1,5 @@
 use super::{
-    super::{
-        super::std::{immutable::*, string::*},
-        cache::*,
-    },
+    super::super::std::{immutable::*, string::*},
     preferences::*,
 };
 
@@ -32,13 +29,6 @@ impl ETag {
     pub fn parse_list(representation: &str) -> Option<Vec<Self>> {
         let tags: Vec<_> = representation.split(",").map(|tag| tag.parse()).flatten().collect();
         if !tags.is_empty() { Some(tags) } else { None }
-    }
-}
-
-impl CacheWeight for ETag {
-    fn cache_weight(&self) -> usize {
-        const SELF_SIZE: usize = size_of::<ETag>();
-        SELF_SIZE + self.tag.len()
     }
 }
 
@@ -73,7 +63,7 @@ impl FromStr for ETag {
 }
 
 impl fmt::Display for ETag {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         if self.weak { write!(formatter, "W/\"{}\"", self.tag) } else { write!(formatter, "\"{}\"", self.tag) }
     }
 }
